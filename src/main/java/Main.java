@@ -16,7 +16,7 @@ public class Main {
         ExecutorService pool = Executors.newFixedThreadPool(5);
         List<Future> test_pool = new ArrayList<>();
         long start = System.currentTimeMillis() / 1000;
-        for(int i = 0; i < 20; i++){
+        for(int i = 0; i < 1; i++){
             Map<String,Record> map1 = new HashMap<>();
             map1.put("telegram", new TelegramConsumer(6288237005L));
             map1.put("whatsapp", new WhatsappConsumer("79023789604"));

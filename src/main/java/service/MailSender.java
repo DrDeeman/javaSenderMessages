@@ -7,15 +7,30 @@ import records.MailConsumer;
 import records.StatusMessage;
 import records.TelegramConsumer;
 
+import java.io.IOException;
 import java.util.Properties;
 
 @AllArgsConstructor
 public class MailSender {
 
     private final MailConsumer consumer;
-    private static final  String smtp_host = "mail.ruglonass.ru";
-    private static final  String smtp_port = "587";
-    private static final  String smtp_sender = "monitoring@ruglonass.ru";
+    private static final  String smtp_host;
+    private static final  String smtp_port;
+    private static final  String smtp_sender;
+    private static final  String auth_pass;
+
+    static{
+        try {
+            Properties props = new Properties();
+            props.load(ClassLoader.getSystemResourceAsStream("application.properties"));
+            smtp_host = props.getProperty("mail.smtp_host");
+            smtp_port = props.getProperty("mail.smtp_port");
+            smtp_sender = props.getProperty("mail.smtp_sender");
+            auth_pass = props.getProperty("mail.auth_pass");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     public StatusMessage sendMessage(String message) throws MessagingException {
@@ -29,7 +44,7 @@ public class MailSender {
         Session session = Session.getInstance(prop, new Authenticator(){
             @Override
             protected PasswordAuthentication getPasswordAuthentication(){
-                return new PasswordAuthentication(smtp_sender,"wtf1mkl8Q1");
+                return new PasswordAuthentication(smtp_sender,auth_pass);
             }
         });
 
