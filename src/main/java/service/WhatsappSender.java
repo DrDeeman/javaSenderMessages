@@ -14,12 +14,23 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 @AllArgsConstructor
 public class WhatsappSender {
 
-    private static final String whatsapp_token = "087d73f6c5114306b0eaac216df5c99a554667262e26454bae";
+    private static final String whatsapp_token;
     private WhatsappConsumer consumer;
+
+    static{
+        Properties props = new Properties();
+        try {
+            props.load(ClassLoader.getSystemResourceAsStream("application.properties"));
+            whatsapp_token = props.getProperty("whatsapp.token");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public StatusMessage sendMessage(String message)throws MalformedURLException, IOException {
         URL url = new URL(

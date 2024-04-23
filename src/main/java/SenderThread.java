@@ -1,6 +1,7 @@
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import records.*;
+import service.GooglePushSender;
 import service.MailSender;
 import service.TelegramSender;
 import service.WhatsappSender;
@@ -69,6 +70,16 @@ public class SenderThread implements Runnable {
                                     StatusMessage mresult = (new MailSender((MailConsumer) consumer)).sendMessage(message.name());
                                     logger.info(mresult.message());
                                     senderStatus.put(k, mresult.status());
+                                    break;
+
+                                case "records.GooglePushConsumer":
+                                    /*
+                                    logger.info("start send push in device");
+                                    StatusMessage gpresult = (new GooglePushSender((GooglePushConsumer) consumer)).sendMessage(message.name());
+                                    logger.info(gpresult.message());
+                                    senderStatus.put(k, gpresult.status());
+
+                                     */
                                     break;
                             }
 

@@ -1,0 +1,26 @@
+{
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "database.dbname": "ruglonass",
+    "database.history.kafka.bootstrap.servers": "172.16.238.6:9092,172.16.238.7:9092",
+    "database.history.kafka.topic": "schema-changes.ruglonass",
+    "database.history.skip.unparseable.ddl": true,
+    "database.hostname": "172.16.238.2",
+    "database.password": "passwd",
+    "database.port": "5432",
+    "database.server.name": "postgres",
+    "database.user": "postgres",
+    "name": "db_master",
+    "plugin.name": "pgoutput",
+    "table.include.list": "public.test",
+    "tasks.max": "1",
+    "topic.creation.default.cleanup.policy": "delete",
+    "topic.creation.default.partitions": 1,
+    "topic.creation.default.replication.factor": 2,
+    "topic.creation.default.retention.ms": 604800000,
+    "topic.creation.default.segment.ms": 2592000000,
+    "topic.creation.enable": "true",
+    "topic.prefix": "postgres"
+  },
+  "name": "db_master"
+}

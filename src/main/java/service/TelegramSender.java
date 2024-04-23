@@ -13,12 +13,23 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 @AllArgsConstructor
 public class TelegramSender {
 
-    private static final String telegram_token = "6818011272:AAGrDecGw99NBkCntHMUTEXNKjYInVlLHn0";
+    private static final String telegram_token;
     private TelegramConsumer consumer;
+
+    static{
+        Properties props = new Properties();
+        try {
+            props.load(ClassLoader.getSystemResourceAsStream("application.properties"));
+            telegram_token = props.getProperty("telegram.bot_token");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public StatusMessage sendMessage(String message) throws MalformedURLException, IOException {
         URL url = new URL(

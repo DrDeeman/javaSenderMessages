@@ -1,0 +1,16 @@
+
+	java:S112!"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8Ä³ÓÙğ1J$768ef6bb-9d12-4b2e-8b31-c84924735e17
+	java:S112V"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8È³ÓÙğ1J$c4d1ca2a-861f-4c4c-9a24-f527fcb03ccb
+	java:S112Y"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8È³ÓÙğ1J$ad8e6158-38a1-44b2-b4f4-ee2c4efef361
+d
+java:S1116"Remove this empty statement.(ƒ„»ıúÿÿÿÿ8™´ÓÙğ1J$193a155c-4f69-4552-a1d4-616e7d98b0d4
+Œ
+java:S2147X"DCombine this catch with the one at line 85, which has the same body.(Äíàêşÿÿÿÿ8¥´ÓÙğ1J$f222a096-7139-4f98-b7fa-f5fe534cc435
+¡
+java:S2142U"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€8¦´ÓÙğ1J$724a8514-8126-4cd0-8638-167c244f28d6
+r	java:S106:"+Replace this use of System.out by a logger.(úÂşßÿÿÿÿÿ8¬´ÓÙğ1J$22bc651c-c62e-4e91-9633-b7b0df396fd9
+‚
+java:S6213@":Rename this variable to not match a restricted identifier.(´Å£Ÿıÿÿÿÿ8°´ÓÙğ1J$9ffa1b08-447a-40dd-9af1-ea310e51695d
+r	java:S106A"+Replace this use of System.out by a logger.(Ğ‡ó´şÿÿÿÿ8±´ÓÙğ1J$7b7c86b5-3af9-47f4-a0e5-57f85324b7b6
+m	java:S106E"+Replace this use of System.out by a logger.(¨¤²ä8¹´ÓÙğ1J$e4844f9d-f369-4bfa-9292-8ffe72664e41
+r	java:S106Q"+Replace this use of System.out by a logger.(¼Í‹¨şÿÿÿÿ8¾´ÓÙğ1J$8bc0de35-ef7a-4f8d-836e-4c1683a1f8a7

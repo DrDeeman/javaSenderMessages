@@ -1,0 +1,26 @@
+
+”	java:S135/"YReduce the total number of break and continue statements in this loop to use at most one.(´ÿÕ™J$6447dccb-7a70-4a66-aecf-e1abf540a77b
+v
+java:S11410"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿJ$a84651a3-0bbe-45ee-bb78-5ec61e0d19c4
+Œ	java:S117#"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ÿ“ÿ¤J$a2625b56-eecb-4419-8a7b-809f06114623
+‘	java:S117$"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‹›¾½ıÿÿÿÿJ$6e927809-4658-4e86-a4d7-43f67b06d7dc
+d
+java:S54112"(Use a primitive boolean expression here.(Õ†åJ$44d145f3-d33f-4dc7-9c84-a5473df7051f
+
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(“–ışJ$9561577b-978e-452e-830f-4763e22256b0
+š
+java:S2142p"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(”ı¾J$735002f1-a388-4152-9ecb-8f2c4e433ce0
+u
+java:S28641"4Iterate over the "entrySet" instead of the "keySet".(‡é±›ÿÿÿÿÿJ$f0eaf51d-67a0-4786-9da2-70e0dcbb39fe
+b	java:S1315""Add a default case to this switch.(ıí‡îüÿÿÿÿJ$486226f1-126c-43f9-aab6-f1bf344685f6
+R
+java:S1128"5Remove this unused import 'service.GooglePushSender'.(²şÚ8Ô‚ÙÏğ1
+^
+java:S1128
+"<Remove this unused import 'java.net.SocketTimeoutException'.(Ú©İÔşÿÿÿÿ8Ô‚ÙÏğ1
+O
+java:S1128"-Remove this unused import 'java.util.Arrays'.(î–˜Éüÿÿÿÿ8Õ‚ÙÏğ1
+\
+java:S1128":Remove this unused import 'java.util.concurrent.Callable'.(¾×¶îûÿÿÿÿ8Õ‚ÙÏğ1
+Z
+java:S1128"8Remove this unused import 'java.util.stream.Collectors'.(Óóº´úÿÿÿÿ8Ö‚ÙÏğ1
