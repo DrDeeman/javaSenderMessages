@@ -1,32 +1,26 @@
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import records.*;
-import service.GooglePushSender;
-import service.MailSender;
-import service.TelegramSender;
-import service.WhatsappSender;
+import services.TelegramSender;
 
 
-import java.net.SocketTimeoutException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class SenderThread implements Runnable {
+public class SenderThread implements Callable {
 
     @NonNull private final StructMessage message;
 
 
 
     @Override
-    public void run(){
+    public Map<String, Boolean> call(){
 
-        Logger logger = Logger.getLogger(SenderThread.class.getName()+"-"+message.name());
+        Logger logger = Logger.getLogger(SenderThread.class.getName()+"-"+message.id());
         logger.info("start messages sender");
         logger.setLevel(Level.INFO);
 
@@ -53,23 +47,31 @@ public class SenderThread implements Runnable {
                             switch (consumer.getClass().getName()) {
                                 case "records.TelegramConsumer":
                                     logger.info("start send in telegram");
-                                    StatusMessage tresult = (new TelegramSender((TelegramConsumer) consumer)).sendMessage(message.name());
+                                    StatusMessage tresult = (new TelegramSender((TelegramConsumer) consumer)).sendMessage(message.message());
                                     logger.info(tresult.message());
                                     senderStatus.put(k, tresult.status());
                                     break;
 
                                 case "records.WhatsappConsumer":
+                                    /*
                                         logger.info("start send in whatsapp");
                                         StatusMessage wresult = (new WhatsappSender((WhatsappConsumer) consumer)).sendMessage(message.name());
                                         logger.info(wresult.message());
                                         senderStatus.put(k, wresult.status());
+
+                                     */
+                                    senderStatus.put(k,true);
                                     break;
 
                                 case "records.MailConsumer":
+                                    /*
                                     logger.info("start send in mail");
                                     StatusMessage mresult = (new MailSender((MailConsumer) consumer)).sendMessage(message.name());
                                     logger.info(mresult.message());
                                     senderStatus.put(k, mresult.status());
+
+                                     */
+                                    senderStatus.put(k,true);
                                     break;
 
                                 case "records.GooglePushConsumer":
@@ -115,6 +117,7 @@ public class SenderThread implements Runnable {
 
         logger.info("end thread");
 
+        return senderStatus;
 
     }
 }

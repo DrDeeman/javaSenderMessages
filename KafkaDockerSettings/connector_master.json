@@ -17,8 +17,8 @@
     "topic.creation.default.cleanup.policy": "delete",
     "topic.creation.default.partitions": 1,
     "topic.creation.default.replication.factor": 2,
-    "topic.creation.default.retention.ms": 604800000,
-    "topic.creation.default.segment.ms": 2592000000,
+    "topic.creation.default.retention.ms": 86400000,
+    "topic.creation.default.segment.ms": 43200000,
     "topic.creation.enable": "true",
     "topic.prefix": "postgres"
   },

@@ -1,11 +1,10 @@
-package service;
+package services;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import lombok.AllArgsConstructor;
 import records.MailConsumer;
 import records.StatusMessage;
-import records.TelegramConsumer;
 
 import java.io.IOException;
 import java.util.Properties;
