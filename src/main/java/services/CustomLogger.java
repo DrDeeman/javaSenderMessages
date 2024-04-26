@@ -33,7 +33,7 @@ public class CustomLogger {
     public CustomLogger(String name){
         logger = Logger.getLogger(name);
         logger.setLevel(Level.WARNING);
-        logger.setUseParentHandlers(false);
+        logger.setUseParentHandlers(true);
     }
 
 

@@ -18,10 +18,7 @@ import records.StructMessage;
 
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -109,93 +106,137 @@ public class Main {
     }
 
 
+    private static final Properties DB_PROPS;
+
+    static{
+        DB_PROPS = new Properties();
+        DB_PROPS.put("user",DB_USERNAME);
+        DB_PROPS.put("password",DB_PASSWORD);
+        DB_PROPS.put("connectTimeout",1);
+
+    }
+
+
     private static boolean checkGoal(FutureThreadWithIdRecord futureInPool){
         Future<Map<String, StatusMessage>> f = futureInPool.getF();
         return f.isDone() && !f.isCancelled() && !futureInPool.isDone();
     }
 
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
+    public static void main(String[] args) throws IOException {
 
         CustomLogger logger = new CustomLogger("app.Main");
         ExecutorService pool = Executors.newFixedThreadPool(SIZE_POOL);//создаем фиксируемый пул потоков
         FutureThreadWithIdRecord[] futurePool = new FutureThreadWithIdRecord[SIZE_POOL];
         //создаем массив фьючерсов для ожидания результата. Выполненные задачи замещаются новыми либо создаются до границы пула.
 
+        KafkaConsumer<String, String> tconsumer = null;
 
-        long start = System.currentTimeMillis() / 1000;
+        long timeFirstConnect = System.currentTimeMillis() / 1000;
+        int  countReconectJDBC = 0;
 
-        try(
-                KafkaConsumer<String, String> consumer = new KafkaConsumer<>(kafkaProps);
-                Connection conn = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD)
-        ) {
+        for(;;) {
 
-            TopicPartition part = new TopicPartition(TOPIC_MESSAGES, 0);
-            consumer.assign(Collections.singletonList(part));//подключаемся к топику
-            logger.log(Level.INFO,"Connect..");
+            logger.log(Level.WARNING,"Reconnect...");
+            boolean needLeave = false;
 
-            while (true) {
+            try (
+                    KafkaConsumer<String, String> consumer = tconsumer = (tconsumer == null?new KafkaConsumer<>(kafkaProps):tconsumer);
+                    Connection conn = DriverManager.getConnection(DB_URL, DB_PROPS);
+            ) {
 
 
-                for (int ind = 0; ind < SIZE_POOL; ind++) {//постоянно проходимся циклом по пулу
+                TopicPartition part = new TopicPartition(TOPIC_MESSAGES, 0);
+                consumer.assign(Collections.singletonList(part));//подключаемся к топику
+                logger.log(Level.INFO, "Connect..");
 
-                    FutureThreadWithIdRecord futureInPool = futurePool[ind];
-                    if (futureInPool != null) { //если задача была назначена по этому индексу
-                        Future<Map<String, StatusMessage>> f = futureInPool.getF();
-                        if (checkGoal(futureInPool)) {
-                            //если поток завершил работу и не был прерван и лог в базу записан не был
-                            try (PreparedStatement sql = conn.prepareStatement("UPDATE events_messages SET status_consumers=? WHERE id = ?")) {
+                while (true) {
 
-                                PGobject jsonObject = new PGobject();
-                                jsonObject.setType("jsonb");
-                                jsonObject.setValue(gson.toJson(f.get()));
-                                sql.setObject(1,jsonObject);
-                                sql.setInt(2, futureInPool.getIdRow());
-                                sql.executeUpdate();
+
+                    for (int ind = 0; ind < SIZE_POOL; ind++) {//постоянно проходимся циклом по пулу
+
+                        FutureThreadWithIdRecord futureInPool = futurePool[ind];
+                        if (futureInPool != null) { //если задача была назначена по этому индексу
+                            Future<Map<String, StatusMessage>> f = futureInPool.getF();
+                            if (checkGoal(futureInPool)) {
+                                //если поток завершил работу и не был прерван и лог в базу записан не был
+                                try (PreparedStatement sql = conn.prepareStatement("UPDATE events_messages SET status_consumers=? WHERE id = ?")) {
+
+                                    PGobject jsonObject = new PGobject();
+                                    jsonObject.setType("jsonb");
+                                    jsonObject.setValue(gson.toJson(f.get()));
+                                    sql.setObject(1, jsonObject);
+                                    sql.setInt(2, futureInPool.getIdRow());
+                                    sql.executeUpdate();
+                                }
+
+                                futureInPool.setDone(true);//устанавливаем что данная задача полностью завершила работу
+                            }
+                        }
+
+                        if (futureInPool == null || futureInPool.isDone()) {//если объект задачи не был назначен или работу завершил
+                            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));//делаем опрос в течении секунды
+
+                            if (records.count() > 0) {
+                                ConsumerRecord<String, String> r = records.iterator().next();
+
+                                JsonObject payload = JsonParser
+                                        .parseString(r.value())
+                                        .getAsJsonObject()
+                                        .get("payload")
+                                        .getAsJsonObject();
+
+                                if (payload.get("op").getAsString().equals("c")) {//фильтруем события таблицы и работаем только с INSERT
+                                    StructMessage trow = gson.fromJson(payload.get("after").toString(), StructMessage.class);
+                                    //преобразовываем payload json в POJO
+                                    futurePool[ind] = new FutureThreadWithIdRecord(
+                                            trow.id(),
+                                            pool.submit(new SenderThread(trow))
+                                    );//создаем объект задачи и сразу запускаем поток
+
+                                }
                             }
 
-                            futureInPool.setDone(true);//устанавливаем что данная задача полностью завершила работу
+                            consumer.commitSync();//синхронно фиксируем смещение
                         }
                     }
 
-                    if(futureInPool == null || futureInPool.isDone()) {//если объект задачи не был назначен или работу завершил
-                        ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));//делаем опрос в течении секунды
+                    logger.log(Level.INFO, "Searching..");
+                    // Thread.sleep(2000);
+                    Thread.yield();//после проходки по циклу отдаем процессорное время другим потокам
 
-                        if(records.count()>0){
-                            ConsumerRecord<String, String> r = records.iterator().next();
+                }
+            }
+            catch (SQLException e) {
+                logger.log(Level.SEVERE, e.getMessage());
 
-                            JsonObject payload = JsonParser
-                                    .parseString(r.value())
-                                    .getAsJsonObject()
-                                    .get("payload")
-                                    .getAsJsonObject();
+                if(countReconectJDBC>5){
+                    long timeEndConnect = System.currentTimeMillis() / 1000;
 
-                            if (payload.get("op").getAsString().equals("c")) {//фильтруем события таблицы и работаем только с INSERT
-                                StructMessage trow = gson.fromJson(payload.get("after").toString(), StructMessage.class);
-                                //преобразовываем payload json в POJO
-                                futurePool[ind] = new FutureThreadWithIdRecord(
-                                        trow.id(),
-                                        pool.submit(new SenderThread(trow))
-                                );//создаем объект задачи и сразу запускаем поток
-
-                            }
-                        }
-
-                        consumer.commitSync();//синхронно фиксируем смещение
+                    if(timeEndConnect  - timeFirstConnect < 60) {
+                        logger.log(Level.SEVERE, "Connection sets too many... shutdown");
+                        needLeave = true;
+                    } else {
+                        countReconectJDBC = 0;
+                        timeFirstConnect = timeEndConnect;
                     }
                 }
 
-                logger.log(Level.INFO,"Searching..");
-               // Thread.sleep(2000);
-                Thread.yield();//после проходки по циклу отдаем процессорное время другим потокам
-
+                countReconectJDBC++;
             }
-        } catch(SQLException e){
-            logger.log(Level.SEVERE,e.getMessage());
-            long end = System.currentTimeMillis() / 1000;
-            logger.log(Level.INFO,"End:"+(end-start));
-            pool.shutdown();//при возникновении исключения завершаем работу всех потоков
+
+            catch(Exception e){
+                logger.log(Level.SEVERE, e.getMessage());
+                needLeave = true;
+            }
+
+            if(needLeave){
+                break;
+            }
+
         }
+
+        pool.shutdown();//при возникновении исключения завершаем работу всех потоков
 /*
         while(Arrays.stream(FuturePool).filter(g->!g.f().isDone()).count()!=0){
             //for tests
