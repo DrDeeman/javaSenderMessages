@@ -14,6 +14,7 @@ import services.senders.WhatsappSender;
 
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -49,41 +50,41 @@ public class SenderThread implements Callable<Map<String, StatusMessage>> {
 
         try{
             for (;;) {
+              try {
+                  for (Map.Entry<String, StatusMessage> entry : senderStatus.entrySet()) {
 
-                    for (Map.Entry<String, StatusMessage> entry : senderStatus.entrySet()) {
+                      String k = entry.getKey();
+                      StatusMessage statusObject = entry.getValue();
+                      boolean status = statusObject.status();
 
-                        String k = entry.getKey();
-                        StatusMessage statusObject = entry.getValue();
-                        boolean status = statusObject.status();
+                      if (!status) {
+                          Record consumer = consumers.get(k);
 
-                        if (!status) {
-                            Record consumer = consumers.get(k);
+                          switch (consumer.getClass().getName()) {
+                              case "records.consumers.TelegramConsumer":
+                                  logger.log(Level.INFO, "start send in telegram");
+                                  StatusMessage tresult = (new TelegramSender((TelegramConsumer) consumer)).sendMessage(message.message());
+                                  logger.log(Level.INFO, tresult.bodyResponse().toString());
+                                  senderStatus.put(k, tresult);
+                                  break;
 
-                            switch (consumer.getClass().getName()) {
-                                case "records.consumers.TelegramConsumer":
-                                    logger.log(Level.INFO,"start send in telegram");
-                                    StatusMessage tresult = (new TelegramSender((TelegramConsumer) consumer)).sendMessage(message.message());
-                                    logger.log(Level.INFO,tresult.bodyResponse().toString());
-                                    senderStatus.put(k, tresult);
-                                    break;
+                              case "records.consumers.WhatsappConsumer":
 
-                                case "records.consumers.WhatsappConsumer":
+                                  logger.log(Level.INFO, "start send in whatsapp");
+                                  StatusMessage wresult = (new WhatsappSender((WhatsappConsumer) consumer)).sendMessage(message.message());
+                                  logger.log(Level.INFO, wresult.bodyResponse().toString());
+                                  senderStatus.put(k, wresult);
+                                  break;
 
-                                    logger.log(Level.INFO,"start send in whatsapp");
-                                    StatusMessage wresult = (new WhatsappSender((WhatsappConsumer) consumer)).sendMessage(message.message());
-                                    logger.log(Level.INFO,wresult.bodyResponse().toString());
-                                    senderStatus.put(k, wresult);
-                                    break;
+                              case "records.consumers.MailConsumer":
 
-                                case "records.consumers.MailConsumer":
+                                  logger.log(Level.INFO, "start send in mail");
+                                  StatusMessage mresult = (new MailSender((MailConsumer) consumer)).sendMessage(message.message());
+                                  logger.log(Level.INFO, mresult.bodyResponse().toString());
+                                  senderStatus.put(k, mresult);
+                                  break;
 
-                                    logger.log(Level.INFO,"start send in mail");
-                                    StatusMessage mresult = (new MailSender((MailConsumer) consumer)).sendMessage(message.message());
-                                    logger.log(Level.INFO,mresult.bodyResponse().toString());
-                                    senderStatus.put(k, mresult);
-                                    break;
-
-                                case "records.consumers.GooglePushConsumer":
+                              case "records.consumers.GooglePushConsumer":
                                     /*
                                     logger.log(Level.INFO,"start send push in device");
                                     StatusMessage gpresult = (new GooglePushSender((GooglePushConsumer) consumer)).sendMessage(message.name());
@@ -91,33 +92,37 @@ public class SenderThread implements Callable<Map<String, StatusMessage>> {
                                     senderStatus.put(k, gpresult.status());
 
                                      */
-                                    break;
+                                  break;
 
-                                default:
-                                    senderStatus.put(k, new StatusMessage(true, new JsonObject()));
-                                    break;
-                            }
+                              default:
+                                  senderStatus.put(k, new StatusMessage(true, new JsonObject()));
+                                  break;
+                          }
 
-                        }
-                    }
+                      }
+                  }
 
 
-                    boolean needStoppedSending = false;
+                  boolean needStoppedSending = false;
 
-                if(senderStatus.values().stream().allMatch(StatusMessage::status)){
-                    logger.log(Level.INFO,"all message send");
-                    needStoppedSending = true;
-                }
+                  if (senderStatus.values().stream().allMatch(StatusMessage::status)) {
+                      logger.log(Level.INFO, "all message send");
+                      needStoppedSending = true;
+                  }
 
-                nowTime = System.currentTimeMillis() / 1000;
-                if(nowTime - startTime > 300) {
-                    logger.log(Level.WARNING,"Timeout senders send message with id "+message.id());
-                    needStoppedSending = true;
-                }
+                  nowTime = System.currentTimeMillis() / 1000;
+                  if (nowTime - startTime > 300) {
+                      logger.log(Level.WARNING, "Timeout senders send message with id " + message.id());
+                      needStoppedSending = true;
+                  }
 
-                if(needStoppedSending){
-                  break;
-                }
+                  if (needStoppedSending) {
+                      break;
+                  }
+
+              }catch(SocketTimeoutException e){
+                  logger.log(Level.WARNING,"Connect timeout.");
+              }
 
                 Thread.yield();
             }

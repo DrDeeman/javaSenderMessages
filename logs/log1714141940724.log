@@ -1,0 +1,2 @@
+Apr 26, 2024 2:32:20 PM services.CustomLogger log
+SEVERE: Exception. Detail:Connect timed out.class:java.net.SocketTimeoutException

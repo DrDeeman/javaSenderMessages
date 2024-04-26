@@ -35,7 +35,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     networks:
      web:
-       ipv4_address: 172.16.238.5
+       ipv4_address: 172.16.238.50
 
 
  broker1:
@@ -58,7 +58,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
     networks:
      web:
-       ipv4_address: 172.16.238.6
+       ipv4_address: 172.16.238.51
 
 
  broker2:
@@ -81,7 +81,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
     networks:
      web:
-       ipv4_address: 172.16.238.7
+       ipv4_address: 172.16.238.52
 
 
  debezium:
@@ -104,19 +104,21 @@ services:
        ENABLE_DEBEZIUM_SCRIPTING: 'true'
      networks:
       web:
-        ipv4_address: 172.16.238.9
+        ipv4_address: 172.16.238.53
 
 
  sender_message:
      build:
        context: .
        dockerfile: ./KafkaDockerSettings/dockerFileSender
+     volumes:
+       - ./logs/:/var/logs
      depends_on:
        - broker1
        - broker2
      networks:
        web:
-         ipv4_address: 172.16.238.10
+         ipv4_address: 172.16.238.54
 
 
 networks:

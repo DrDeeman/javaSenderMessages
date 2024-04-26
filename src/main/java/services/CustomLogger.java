@@ -40,7 +40,7 @@ public class CustomLogger {
     public void log(Level lvl, String log) throws IOException{
 
         if(LOGGING_IN_FILE && fh == null && lvl == Level.SEVERE){
-            File path = new File(System.getProperty("user.home")+LOGGING_PATH);
+            File path = new File(LOGGING_PATH);
             boolean existPath = true;
             if(!path.exists()) {
                 existPath = path.mkdir();
@@ -48,8 +48,7 @@ public class CustomLogger {
 
             if(path.exists() || existPath) {
                 fh = new FileHandler(
-                        System.getProperty("user.home")
-                                + LOGGING_PATH
+                         LOGGING_PATH
                                 + "log"
                                 +System.currentTimeMillis()
                                 +".log"
