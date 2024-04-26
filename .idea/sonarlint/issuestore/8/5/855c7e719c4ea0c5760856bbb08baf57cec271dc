@@ -1,17 +1,23 @@
 
 w
-java:S3740"/Provide the parametrized type for this generic.(‹‹«úÿÿÿÿ8¿Ÿ¯ÿğ1J$ba8ab0bc-5a94-4f86-895b-24905640a50a
-›	java:S135)"YReduce the total number of break and continue statements in this loop to use at most one.(´ÿÕ™8ÁŸ¯ÿğ1J$702b1d24-3b31-424b-b76a-c9949895a196
+java:S3740"/Provide the parametrized type for this generic.(‹‹«úÿÿÿÿ8³©ş ñ1J$8e46ce47-1bcb-4433-ab74-7150f3a9688c
+›	java:S1353"YReduce the total number of break and continue statements in this loop to use at most one.(´ÿÕ™8·©ş ñ1J$ae30b93f-952c-4eb8-893d-365f60a4e790
 }
-java:S1141*"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8ÂŸ¯ÿğ1J$f5a8ea60-fb7e-41dc-8ccb-bc11534f94f9
-“	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ÿ“ÿ¤8ÃŸ¯ÿğ1J$6637b385-dbc8-45b7-b81c-9c5b64fe0df6
-˜	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‹›¾½ıÿÿÿÿ8ÃŸ¯ÿğ1J$752d5ab6-bc2b-4d39-854a-bbbe7280f5e1
+java:S11414"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8¹©ş ñ1J$330498f3-e983-45e8-9405-42c59053748c
+“	java:S117'"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ÿ“ÿ¤8»©ş ñ1J$8b89e24d-a2d6-4e89-8b70-38e448115e62
+˜	java:S117("QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‹›¾½ıÿÿÿÿ8»©ş ñ1J$7c92e912-e200-4ded-9124-76d2df9e6bd0
 k
-java:S5411,"(Use a primitive boolean expression here.(Õ†å8ÉŸ¯ÿğ1J$e0cf9bea-50e7-46c7-8fb0-e34a3893d2fc
-š
-java:S3776"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(›‹ïşÿÿÿÿ8ßŸ¯ÿğ1J$84b06e12-e8d3-4082-a98c-5adb7578e499
-¡
-java:S2142r"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(”ı¾8úŸ¯ÿğ1J$9239efa3-cd0f-42d2-957a-98aeede8574f
+java:S54116"(Use a primitive boolean expression here.(Õ†å8¾©ş ñ1J$0b63b8df-0a2a-47c1-b07e-e6e7a1f15560
+•
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(·ı®Ë8í®ş ñ1J$20dfed6e-1577-4a41-ad7a-275a9d4df4c8
 |
-java:S2864+"4Iterate over the "entrySet" instead of the "keySet".(‡é±›ÿÿÿÿÿ8ûŸ¯ÿğ1J$7f01cac0-8d27-44f3-bcbb-5f7f37433bfc
-i	java:S131/""Add a default case to this switch.(ıí‡îüÿÿÿÿ8ƒ ¯ÿğ1J$407e2623-6c26-4361-aac5-3964db2da4ea
+java:S28645"4Iterate over the "entrySet" instead of the "keySet".(‡é±›ÿÿÿÿÿ8Œ¯ş ñ1J$8b54bd44-5290-4e3b-a355-7b6f6aa50b5e
+i	java:S1319""Add a default case to this switch.(ıí‡îüÿÿÿÿ8‘¯ş ñ1J$eb1a7a83-9c4f-4414-adc7-8e9fba7a0cf7
+l
+java:S1128")Remove this unused import 'java.io.File'.(†Ğ¥Å8Ûèô¥ñ1J$de418903-8fd4-4dd3-a534-1b199928f32a
+}
+java:S1128":Remove this unused import 'java.util.logging.FileHandler'.(—­—å8Üèô¥ñ1J$41be1bdf-7cc5-4e41-90e9-2987f906e8f3
+w
+java:S1128"4Remove this unused import 'java.util.logging.Level'.(…µÛ¶8ßèô¥ñ1J$6a482616-b2bb-4dee-9a17-3bdfda2462d6
+
+java:S1128">Remove this unused import 'java.util.logging.SimpleFormatter'.(ÇöÁ8ßèô¥ñ1J$5d258e95-c93d-4189-9c4b-03c9b11dab6d

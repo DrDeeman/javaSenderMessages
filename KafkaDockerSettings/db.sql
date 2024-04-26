@@ -20,6 +20,9 @@ SET row_security = off;
 
 CREATE ROLE ruglonass;
 ALTER ROLE ruglonass WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS PASSWORD 'md57a51bb6db0f17440f7f3c63b0eaf6b98';
+
+CREATE ROLE debezium;
+ALTER ROLE debezium WITH  NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN REPLICATION NOBYPASSRLS PASSWORD 'md51b593ed83f844833ff6f148ad092a684';
 --
 -- TOC entry 6927 (class 1262 OID 16391)
 -- Name: ruglonass; Type: DATABASE; Schema: -; Owner: postgres
@@ -49,12 +52,14 @@ SET row_security = off;
 -- Name: users Type: TABLE; Schema: public; Owner: ruglonass
 --
 
-CREATE TABLE public.test(
+CREATE TABLE public.events_messages(
 id bigserial PRIMARY KEY,
+id_user bigint,
+datetime timestamp DEFAULT NOW(),
 message text,
 consumers jsonb,
 status_consumers jsonb
 );
 
 
-ALTER TABLE public.test OWNER TO ruglonass;
+ALTER TABLE public.events_messages OWNER TO ruglonass;

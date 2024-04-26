@@ -1,10 +1,10 @@
 package services.deserializers;
 
 import com.google.gson.*;
-import records.MailConsumer;
+import records.consumers.MailConsumer;
 import records.StructMessage;
-import records.TelegramConsumer;
-import records.WhatsappConsumer;
+import records.consumers.TelegramConsumer;
+import records.consumers.WhatsappConsumer;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;

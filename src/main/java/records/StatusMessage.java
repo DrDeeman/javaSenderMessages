@@ -1,4 +1,6 @@
 package records;
 
-public record StatusMessage(Boolean status, String message) {
+import com.google.gson.JsonObject;
+
+public record StatusMessage(Boolean status, JsonObject bodyResponse) {
 }
