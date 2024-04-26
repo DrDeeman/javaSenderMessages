@@ -160,7 +160,7 @@ public class Main {
                             Future<Map<String, StatusMessage>> f = futureInPool.getF();
                             if (checkGoal(futureInPool)) {
                                 //если поток завершил работу и не был прерван и лог в базу записан не был
-                                try (PreparedStatement sql = conn.prepareStatement("UPDATE events_messages SET status_consumers=? WHERE id = ?")) {
+                                try (PreparedStatement sql = conn.prepareStatement("UPDATE events_messages SET datetime=NOW(), status_consumers=? WHERE id = ?")) {
 
                                     PGobject jsonObject = new PGobject();
                                     jsonObject.setType("jsonb");
@@ -201,8 +201,6 @@ public class Main {
                         }
                     }
 
-                    logger.log(Level.INFO, "Searching..");
-                    // Thread.sleep(2000);
                     Thread.yield();//после проходки по циклу отдаем процессорное время другим потокам
 
                 }

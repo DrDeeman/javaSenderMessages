@@ -42,7 +42,7 @@ public class SenderThread implements Callable<Map<String, StatusMessage>> {
 
         consumers.keySet().forEach(k-> {
             if(consumers.get(k)!=null) {
-                senderStatus.put(k, new StatusMessage(false,null));
+                senderStatus.put(k, new StatusMessage(false, new JsonObject()));
             }
         });
 
