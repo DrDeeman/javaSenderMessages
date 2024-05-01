@@ -15,7 +15,9 @@ import records.consumers.GooglePushConsumer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -51,10 +53,10 @@ public class GooglePushSender implements SenderInterface{
     @Override
     public StatusMessage sendMessage(String message) {
 
-        HashSet<Boolean> results = new HashSet<>();
+        List<Boolean> results = new ArrayList<>();
 
         Notification note = Notification.builder()
-                .setTitle("Notification")
+                .setTitle("Sputnic.tech")
                 .setBody(message)
                 .build();
 
