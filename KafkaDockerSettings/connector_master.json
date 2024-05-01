@@ -5,7 +5,7 @@
     "database.history.kafka.bootstrap.servers": "172.16.238.6:9092,172.16.238.7:9092",
     "database.history.kafka.topic": "schema-changes.ruglonass",
     "database.history.skip.unparseable.ddl": true,
-    "database.hostname": "172.16.238.2",
+    "database.hostname": "172.16.238.3",
     "database.password": "debez_pass",
     "database.port": "5432",
     "database.server.name": "ruglonass",
