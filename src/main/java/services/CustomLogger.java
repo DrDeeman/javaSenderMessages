@@ -32,7 +32,7 @@ public class CustomLogger {
 
     public CustomLogger(String name){
         logger = Logger.getLogger(name);
-        logger.setLevel(Level.WARNING);
+        logger.setLevel(Level.SEVERE);
         logger.setUseParentHandlers(!LOGGING_IN_FILE);
     }
 
