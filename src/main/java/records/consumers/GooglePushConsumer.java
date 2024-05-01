@@ -1,4 +1,6 @@
 package records.consumers;
 
-public record GooglePushConsumer(String device_token) {
+import java.util.HashSet;
+
+public record GooglePushConsumer(HashSet<String> tokens) {
 }

@@ -1,6 +1,7 @@
 package services.deserializers;
 
 import com.google.gson.*;
+import records.consumers.GooglePushConsumer;
 import records.consumers.MailConsumer;
 import records.StructMessage;
 import records.consumers.TelegramConsumer;
@@ -24,6 +25,7 @@ public class MessageDeserializer implements JsonDeserializer<StructMessage> {
         mapClass.put("telegram",TelegramConsumer.class);
         mapClass.put("whatsapp",WhatsappConsumer.class);
         mapClass.put("mail", MailConsumer.class);
+        mapClass.put("google_push", GooglePushConsumer.class);
 
         HashMap<String, Record> consumers = new HashMap<>();
 

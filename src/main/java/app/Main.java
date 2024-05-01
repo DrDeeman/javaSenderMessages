@@ -26,16 +26,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 
+import records.consumers.GooglePushConsumer;
 import records.consumers.TelegramConsumer;
 import records.consumers.WhatsappConsumer;
 import records.consumers.MailConsumer;
 import services.CustomLogger;
-import services.deserializers.MailConsumerDeserializer;
-import services.deserializers.MessageDeserializer;
-import services.deserializers.TelegramConsumerDeserializer;
-import services.deserializers.WhatsappConsumerDeserializer;
+import services.deserializers.*;
 
 @Getter
 @Setter
@@ -86,6 +85,7 @@ public class Main {
                 .registerTypeAdapter(TelegramConsumer.class, new TelegramConsumerDeserializer())
                 .registerTypeAdapter(WhatsappConsumer.class, new WhatsappConsumerDeserializer())
                 .registerTypeAdapter(MailConsumer.class, new MailConsumerDeserializer())
+                .registerTypeAdapter(GooglePushConsumer.class, new GooglePushConsumerDeserializer())
                 .create();
     }
 
@@ -180,6 +180,8 @@ public class Main {
                             if (records.count() > 0) {
                                 ConsumerRecord<String, String> r = records.iterator().next();
 
+
+
                                 JsonObject payload = JsonParser
                                         .parseString(r.value())
                                         .getAsJsonObject()
@@ -187,7 +189,9 @@ public class Main {
                                         .getAsJsonObject();
 
                                 if (payload.get("op").getAsString().equals("c")) {//фильтруем события таблицы и работаем только с INSERT
+
                                     StructMessage trow = gson.fromJson(payload.get("after").toString(), StructMessage.class);
+
                                     //преобразовываем payload json в POJO
                                     futurePool[ind] = new FutureThreadWithIdRecord(
                                             trow.id(),
@@ -224,7 +228,8 @@ public class Main {
             }
 
             catch(Exception e){
-                logger.log(Level.SEVERE, e.getMessage());
+                logger.log(Level.SEVERE,
+                        Arrays.stream(e.getSuppressed()).map(s-> s.getMessage()).collect(Collectors.joining(",")));
                 needLeave = true;
             }
 

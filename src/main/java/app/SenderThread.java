@@ -4,10 +4,12 @@ package app;
 import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;
 import records.*;
+import records.consumers.GooglePushConsumer;
 import records.consumers.MailConsumer;
 import records.consumers.TelegramConsumer;
 import records.consumers.WhatsappConsumer;
 import services.CustomLogger;
+import services.senders.GooglePushSender;
 import services.senders.MailSender;
 import services.senders.TelegramSender;
 import services.senders.WhatsappSender;
@@ -85,13 +87,10 @@ public class SenderThread implements Callable<Map<String, StatusMessage>> {
                                   break;
 
                               case "records.consumers.GooglePushConsumer":
-                                    /*
-                                    logger.log(Level.INFO,"start send push in device");
-                                    StatusMessage gpresult = (new GooglePushSender((GooglePushConsumer) consumer)).sendMessage(message.name());
-                                    logger.log(Level.INFO,gpresult.message());
-                                    senderStatus.put(k, gpresult.status());
-
-                                     */
+                                    logger.log(Level.INFO,"start send google push in device");
+                                    StatusMessage gpresult = (new GooglePushSender((GooglePushConsumer) consumer)).sendMessage(message.message());
+                                    logger.log(Level.INFO,gpresult.bodyResponse().toString());
+                                    senderStatus.put(k, gpresult);
                                   break;
 
                               default:
