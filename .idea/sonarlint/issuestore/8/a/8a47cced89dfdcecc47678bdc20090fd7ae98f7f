@@ -1,10 +1,0 @@
-
-†	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚ÒéüÿÿÿÿJ$ea1c14bc-d402-4d28-86ba-6ae6dd24d285
-Œ	java:S117:"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(«•ùJ$5f853a13-faec-4605-b431-01d075e12201
-X
-java:S1643="Use a StringBuilder instead.(ùƒÚÊJ$03f3d85d-a9c3-4216-b30d-30d372c41e29
-š	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(ù’è©ıÿÿÿÿJ$d0274591-b0fe-4b3d-9c5a-c566ec21a84c
-º
-java:S1130!"yRemove the declaration of thrown exception 'java.net.MalformedURLException' which is a subclass of 'java.io.IOException'.(ˆÉö¼ıÿÿÿÿJ$1559d558-f039-4f9c-8877-30351a5799ca
-v
-java:S2209$"5Change this instance-reference to a static reference.(ä±ÛƒùÿÿÿÿJ$c0568c58-785f-4b6e-9b6c-122034b36ee3
