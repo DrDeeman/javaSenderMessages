@@ -36,6 +36,7 @@ public class MessageDeserializer implements JsonDeserializer<StructMessage> {
 
         return new StructMessage(
                 jsonObject.get("id").getAsInt(),
+                jsonObject.get("user_name").getAsString(),
                 jsonObject.get("message").getAsString(),
                 consumers
                 );

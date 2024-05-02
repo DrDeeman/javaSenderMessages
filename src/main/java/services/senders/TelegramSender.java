@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import exceptions.CustomException;
 import lombok.AllArgsConstructor;
 import records.StatusMessage;
+import records.StructMessage;
 import records.consumers.TelegramConsumer;
 
 
@@ -35,7 +36,7 @@ public class TelegramSender implements SenderInterface{
     }
 
     @Override
-    public StatusMessage sendMessage(String message) throws IOException {
+    public StatusMessage sendMessage(StructMessage message) throws IOException {
 
         URL url = new URL(
                 "https://api.telegram.org/bot" +
@@ -50,7 +51,7 @@ public class TelegramSender implements SenderInterface{
         out.write(("chat_id=" +
                 consumer.chat() +
                 "&is_bot=true&text=" +
-                URLEncoder.encode(message, StandardCharsets.UTF_8))
+                URLEncoder.encode(message.message(), StandardCharsets.UTF_8))
                 .getBytes());
         out.flush();
         out.close();

@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import exceptions.CustomException;
 import lombok.AllArgsConstructor;
 import records.StatusMessage;
+import records.StructMessage;
 import records.consumers.WhatsappConsumer;
 
 
@@ -46,7 +47,7 @@ public class WhatsappSender implements SenderInterface{
     }
 
     @Override
-    public StatusMessage sendMessage(String message)throws IOException {
+    public StatusMessage sendMessage(StructMessage message)throws IOException {
         URL url = new URL(
                 "https://api.green-api.com/waInstance1101731151/SendMessage/" +
                         WHATSAPP_TOKEN
@@ -59,7 +60,7 @@ public class WhatsappSender implements SenderInterface{
         DataOutputStream out = new DataOutputStream(conn.getOutputStream());
         JsonObject params = new JsonObject();
         params.addProperty("chatId",consumer.phone() + "@c.us");
-        params.addProperty("message",message);
+        params.addProperty("message",message.message());
         out.write((params.toString()).getBytes());
         out.flush();
         out.close();

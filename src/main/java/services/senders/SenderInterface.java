@@ -1,8 +1,9 @@
 package services.senders;
 
 import records.StatusMessage;
+import records.StructMessage;
 
 public interface SenderInterface {
 
-    StatusMessage sendMessage(String message) throws Exception;
+    StatusMessage sendMessage(StructMessage message) throws Exception;
 }

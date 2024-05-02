@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import exceptions.CustomException;
 import lombok.AllArgsConstructor;
 import records.StatusMessage;
+import records.StructMessage;
 import records.consumers.GooglePushConsumer;
 
 import java.io.IOException;
@@ -51,13 +52,13 @@ public class GooglePushSender implements SenderInterface{
 
 
     @Override
-    public StatusMessage sendMessage(String message) {
+    public StatusMessage sendMessage(StructMessage message) {
 
         List<Boolean> results = new ArrayList<>();
 
         Notification note = Notification.builder()
-                .setTitle("Sputnic.tech")
-                .setBody(message)
+                .setTitle(message.user_name())
+                .setBody(message.message())
                 .build();
 
         for(String token : consumer.tokens()) {

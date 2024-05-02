@@ -65,7 +65,7 @@ public class SenderThread implements Callable<Map<String, StatusMessage>> {
                           switch (consumer.getClass().getName()) {
                               case "records.consumers.TelegramConsumer":
                                   logger.log(Level.INFO, "start send in telegram");
-                                  StatusMessage tresult = (new TelegramSender((TelegramConsumer) consumer)).sendMessage(message.message());
+                                  StatusMessage tresult = (new TelegramSender((TelegramConsumer) consumer)).sendMessage(message);
                                   logger.log(Level.INFO, tresult.bodyResponse().toString());
                                   senderStatus.put(k, tresult);
                                   break;
@@ -73,7 +73,7 @@ public class SenderThread implements Callable<Map<String, StatusMessage>> {
                               case "records.consumers.WhatsappConsumer":
 
                                   logger.log(Level.INFO, "start send in whatsapp");
-                                  StatusMessage wresult = (new WhatsappSender((WhatsappConsumer) consumer)).sendMessage(message.message());
+                                  StatusMessage wresult = (new WhatsappSender((WhatsappConsumer) consumer)).sendMessage(message);
                                   logger.log(Level.INFO, wresult.bodyResponse().toString());
                                   senderStatus.put(k, wresult);
                                   break;
@@ -81,14 +81,14 @@ public class SenderThread implements Callable<Map<String, StatusMessage>> {
                               case "records.consumers.MailConsumer":
 
                                   logger.log(Level.INFO, "start send in mail");
-                                  StatusMessage mresult = (new MailSender((MailConsumer) consumer)).sendMessage(message.message());
+                                  StatusMessage mresult = (new MailSender((MailConsumer) consumer)).sendMessage(message);
                                   logger.log(Level.INFO, mresult.bodyResponse().toString());
                                   senderStatus.put(k, mresult);
                                   break;
 
                               case "records.consumers.GooglePushConsumer":
                                     logger.log(Level.INFO,"start send google push in device");
-                                    StatusMessage gpresult = (new GooglePushSender((GooglePushConsumer) consumer)).sendMessage(message.message());
+                                    StatusMessage gpresult = (new GooglePushSender((GooglePushConsumer) consumer)).sendMessage(message);
                                     logger.log(Level.INFO,gpresult.bodyResponse().toString());
                                     senderStatus.put(k, gpresult);
                                   break;

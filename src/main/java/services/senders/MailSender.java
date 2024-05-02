@@ -5,6 +5,7 @@ import exceptions.CustomException;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import lombok.AllArgsConstructor;
+import records.StructMessage;
 import records.consumers.MailConsumer;
 import records.StatusMessage;
 
@@ -35,7 +36,7 @@ public class MailSender implements SenderInterface{
     }
 
     @Override
-    public StatusMessage sendMessage(String message) {
+    public StatusMessage sendMessage(StructMessage message) {
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", true);
         prop.put("mail.smtp.starttls.enable", "true");
@@ -58,7 +59,7 @@ public class MailSender implements SenderInterface{
             m.setRecipients(Message.RecipientType.TO, InternetAddress.parse(consumer.mail()));
             m.setSubject("sub");
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
-            mimeBodyPart.setContent(message, "text/html; charset=utf-8");
+            mimeBodyPart.setContent(message.message(), "text/html; charset=utf-8");
 
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(mimeBodyPart);
