@@ -23,7 +23,7 @@ class TestTelegramSender {
     @DisplayName("SenderMessageInTelegram Test")
      void TestSendMessage() throws IOException {
        TelegramSender sender = new TelegramSender(new TelegramConsumer(6288237005L));
-       StatusMessage status = sender.sendMessage(new StructMessage(1,"test","test", new HashMap<>()));
+       StatusMessage status = sender.sendMessage(new StructMessage(1,"test","test__test", new HashMap<>()));
        assertTrue(status.status());
        assertEquals(200,status.bodyResponse().get("code").getAsInt());
     }

@@ -17,7 +17,6 @@ import records.consumers.GooglePushConsumer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,7 +57,7 @@ public class GooglePushSender implements SenderInterface{
 
         Notification note = Notification.builder()
                 .setTitle(message.user_name())
-                .setBody(message.message())
+                .setBody(message.message().replace("__"," "))
                 .build();
 
         for(String token : consumer.tokens()) {

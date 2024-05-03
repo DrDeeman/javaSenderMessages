@@ -60,7 +60,7 @@ public class WhatsappSender implements SenderInterface{
         DataOutputStream out = new DataOutputStream(conn.getOutputStream());
         JsonObject params = new JsonObject();
         params.addProperty("chatId",consumer.phone() + "@c.us");
-        params.addProperty("message",message.message());
+        params.addProperty("message",message.message().replace("__","\n"));
         out.write((params.toString()).getBytes());
         out.flush();
         out.close();

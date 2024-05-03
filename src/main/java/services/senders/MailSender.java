@@ -59,7 +59,7 @@ public class MailSender implements SenderInterface{
             m.setRecipients(Message.RecipientType.TO, InternetAddress.parse(consumer.mail()));
             m.setSubject("sub");
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
-            mimeBodyPart.setContent(message.message(), "text/html; charset=utf-8");
+            mimeBodyPart.setContent(message.message().replace("__","<br>"), "text/html; charset=utf-8");
 
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(mimeBodyPart);

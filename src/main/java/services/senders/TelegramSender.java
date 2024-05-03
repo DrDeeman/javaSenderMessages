@@ -51,7 +51,7 @@ public class TelegramSender implements SenderInterface{
         out.write(("chat_id=" +
                 consumer.chat() +
                 "&is_bot=true&text=" +
-                URLEncoder.encode(message.message(), StandardCharsets.UTF_8))
+                URLEncoder.encode(message.message().replace("__","\n"), StandardCharsets.UTF_8))
                 .getBytes());
         out.flush();
         out.close();

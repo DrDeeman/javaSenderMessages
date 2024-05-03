@@ -20,8 +20,8 @@ class TestMailSender {
     @Test
     @DisplayName("SenderMessageInTelegram Test")
     void TestSendMessage() throws MessagingException {
-        MailSender sender = new MailSender(new MailConsumer("stalkerdrdeeman@gmailx.com"));
-        StatusMessage status = sender.sendMessage(new StructMessage(1,"test","test", new HashMap<>()));
+        MailSender sender = new MailSender(new MailConsumer("stalkerdrdeeman@gmail.com"));
+        StatusMessage status = sender.sendMessage(new StructMessage(1,"test","test__test", new HashMap<>()));
         assertTrue(status.status());
     }
 }
